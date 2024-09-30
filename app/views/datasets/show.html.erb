@@ -1,0 +1,10 @@
+<div>
+  <h1 class="font-bold text-4xl">Datasets#show</h1>
+  <p>Find me in app/views/datasets/show.html.erb</p>
+</div>
+
+<h1><%= @dataset.name %></h1>
+<p>Source: <%= @dataset.source %></p>
+<h2>Sample Data:</h2>
+<pre><%= JSON.pretty_generate(@dataset.data_sample) %></pre>
+<%= link_to 'View Schema', dataset_schema_path(@dataset) %>

@@ -1,0 +1,12 @@
+<div>
+  <h1 class="font-bold text-4xl">Datasets#index</h1>
+  <p>Find me in app/views/datasets/index.html.erb</p>
+</div>
+
+<h1>Datasets</h1>
+<%= link_to 'New Dataset', new_dataset_path %>
+<ul>
+  <% @datasets.each do |dataset| %>
+    <li><%= link_to dataset.name, dataset_path(dataset) %></li>
+  <% end %>
+</ul>

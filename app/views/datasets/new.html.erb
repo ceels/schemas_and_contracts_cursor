@@ -1,0 +1,21 @@
+<div>
+  <h1 class="font-bold text-4xl">Datasets#new</h1>
+  <p>Find me in app/views/datasets/new.html.erb</p>
+</div>
+
+<h1>New Dataset</h1>
+<%= form_with(model: @dataset, local: true) do |form| %>
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+  <div>
+    <%= form.label :source %>
+    <%= form.text_field :source %>
+  </div>
+  <div>
+    <%= form.label :data_sample %>
+    <%= form.text_area :data_sample %>
+  </div>
+  <%= form.submit %>
+<% end %>
