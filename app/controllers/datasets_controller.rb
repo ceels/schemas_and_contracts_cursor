@@ -23,12 +23,20 @@ class DatasetsController < ApplicationController
 
   private
 
+  def generate_schema
+    csv_content = @dataset.csv_file.download
+    schema_generator = SchemaGenerator.new(csv_content)
+    schema_structure = schema_generator.generate_schema
+    @dataset.create_schema(structure: schema_structure)
+  end
+  
   def dataset_params
-    params.require(:dataset).permit(:name, :source, :data_sample)
+    params.require(:dataset).permit(:name, :source, :csv_file)
   end
 
   def generate_schema
-    schema_generator = SchemaGenerator.new(@dataset.data_sample)
+    csv_content = @dataset.csv_file.download
+    schema_generator = SchemaGenerator.new(csv_content)
     schema_structure = schema_generator.generate_schema
     @dataset.create_schema(structure: schema_structure)
   end

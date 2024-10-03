@@ -1,34 +1,37 @@
+require 'csv'
+
 class SchemaGenerator
-    def initialize(sample_data)
-      @sample_data = sample_data
-    end
-  
-    def generate_schema
-      schema = {}
-      @sample_data.each do |column, sample_value|
-        schema[column] = infer_data_type(sample_value)
-      end
-      schema
-    end
-  
-    private
-  
-    def infer_data_type(value)
-      case value
-      when Integer
-        'integer'
-      when Float
-        'float'
-      when String
-        'string'
-      when TrueClass, FalseClass
-        'boolean'
-      when Date
-        'date'
-      when Time, DateTime
-        'datetime'
-      else
-        'unknown'
-      end
-    end
+  def initialize(csv_content)
+    @csv_content = csv_content
   end
+
+  def generate_schema
+    csv = CSV.parse(@csv_content, headers: true)
+    headers = csv.headers
+    sample_row = csv.first
+
+    schema = {}
+    headers.each do |header|
+      schema[header] = infer_data_type(sample_row[header])
+    end
+
+    schema
+  end
+
+  private
+
+  def infer_data_type(value)
+    return 'integer' if value.to_i.to_s == value
+    return 'float' if value.to_f.to_s == value
+    return 'boolean' if ['true', 'false'].include?(value.downcase)
+    return 'date' if date?(value)
+    'string'
+  end
+
+  def date?(string)
+    Date.parse(string)
+    true
+  rescue ArgumentError
+    false
+  end
+end

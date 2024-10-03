@@ -5,6 +5,7 @@
 
 <h1><%= @dataset.name %></h1>
 <p>Source: <%= @dataset.source %></p>
-<h2>Sample Data:</h2>
-<pre><%= JSON.pretty_generate(@dataset.data_sample) %></pre>
-<%= link_to 'View Schema', dataset_schema_path(@dataset) %>
+<h2>CSV File:</h2>
+<%= link_to 'Download CSV', rails_blob_path(@dataset.csv_file, disposition: "attachment") %>
+<h2>Schema:</h2>
+<pre><%= JSON.pretty_generate(@dataset.schema.structure) %></pre>

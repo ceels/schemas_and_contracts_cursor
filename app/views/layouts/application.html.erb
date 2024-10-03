@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
+
+    <nav>
+    <%= link_to 'Home', root_path %>
+    <%= link_to 'Datasets', datasets_path %>
+    <%= link_to 'New Dataset', new_dataset_path %>
+    </nav>
     <title>SchemasAndContractsCursor</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
