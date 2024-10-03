@@ -9,6 +9,30 @@
 <% if @dataset.csv_file.attached? %>
   <h2>CSV File:</h2>
   <%= link_to 'Download CSV', rails_blob_path(@dataset.csv_file, disposition: "attachment") %>
+  
+  <% if @csv_preview %>
+    <h3>Data Preview:</h3>
+    <table class="table-auto">
+      <thead>
+        <tr>
+          <% @csv_preview[:headers].each do |header| %>
+            <th class="px-4 py-2"><%= header %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% @csv_preview[:rows].each do |row| %>
+          <tr>
+            <% row.values.each do |value| %>
+              <td class="border px-4 py-2"><%= value %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>Unable to preview CSV data.</p>
+  <% end %>
 <% else %>
   <p>No CSV file attached.</p>
 <% end %>
