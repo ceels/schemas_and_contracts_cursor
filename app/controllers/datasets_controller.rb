@@ -5,6 +5,7 @@ class DatasetsController < ApplicationController
 
   def show
     @dataset = Dataset.find(params[:id])
+    generate_schema if @dataset.schema.nil?
   end
 
   def new
@@ -24,10 +25,18 @@ class DatasetsController < ApplicationController
   private
 
   def generate_schema
-    csv_content = @dataset.csv_file.download
-    schema_generator = SchemaGenerator.new(csv_content)
-    schema_structure = schema_generator.generate_schema
-    @dataset.create_schema(structure: schema_structure)
+    return if @dataset.csv_file.blank?
+
+    begin
+      csv_content = @dataset.csv_file.download
+      schema_generator = SchemaGenerator.new(csv_content)
+      schema_structure = schema_generator.generate_schema
+      @dataset.create_schema(structure: schema_structure)
+    rescue => e
+      Rails.logger.error "Error generating schema: #{e.message}"
+      # Optionally, you could set a flash message here
+      # flash[:error] = "Unable to generate schema: #{e.message}"
+    end
   end
   
   def dataset_params
@@ -35,6 +44,8 @@ class DatasetsController < ApplicationController
   end
 
   def generate_schema
+    return if @dataset.csv_file.blank?
+
     csv_content = @dataset.csv_file.download
     schema_generator = SchemaGenerator.new(csv_content)
     schema_structure = schema_generator.generate_schema
