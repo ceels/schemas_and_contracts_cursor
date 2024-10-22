@@ -1,6 +1,7 @@
 require 'csv'
 
 class DatasetsController < ApplicationController
+
   def index
     @datasets = Dataset.all.order(created_at: :desc)
   end
@@ -52,6 +53,8 @@ class DatasetsController < ApplicationController
     else
       redirect_to datasets_path, alert: 'Error deleting dataset.'
     end
+  rescue ActiveRecord::RecordNotFound
+    redirect_to datasets_path, alert: 'Dataset not found.'
   end
 
   private
