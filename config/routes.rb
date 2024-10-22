@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   root 'home#index'
   
-  resources :datasets, only: [:index, :show, :new, :create] do
+  resources :datasets do
+    member do
+      get 'download_csv'
+      get 'download_schema'
+    end
     resources :schemas, only: [:show]
   end
 end
@@ -18,4 +22,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 end
+
+
+
 
