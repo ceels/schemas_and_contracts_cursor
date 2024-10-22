@@ -2,11 +2,12 @@ require 'csv'
 
 class DatasetsController < ApplicationController
   def index
-    @datasets = Dataset.all.order(created_at: :desc)
+    @datasets = Dataset.all
   end
 
   def show
     @dataset = Dataset.find(params[:id])
+    generate_schema if @dataset.schema.nil?
     @csv_preview = generate_csv_preview if @dataset.csv_file.attached?
   end
 
@@ -21,27 +22,6 @@ class DatasetsController < ApplicationController
       redirect_to @dataset, notice: 'Dataset was successfully created.'
     else
       render :new
-    end
-  end
-
-  def download
-    @dataset = Dataset.find(params[:id])
-    send_data @dataset.csv_file.download, filename: @dataset.csv_file.filename.to_s, content_type: 'text/csv'
-  end
-
-  def download_csv
-    @dataset = Dataset.find(params[:id])
-    send_data @dataset.csv_file.download, filename: @dataset.csv_file.filename.to_s, content_type: 'text/csv'
-  end
-
-  def download_schema
-    @dataset = Dataset.find(params[:id])
-    if @dataset.schema
-      send_data @dataset.schema.structure.to_json, 
-                filename: "#{@dataset.name}_schema.json", 
-                type: 'application/json'
-    else
-      redirect_to @dataset, alert: 'No schema available for this dataset.'
     end
   end
 
@@ -67,13 +47,11 @@ class DatasetsController < ApplicationController
   end
 
   def generate_csv_preview
-    return nil unless @dataset.csv_file.attached?
-
     csv_content = @dataset.csv_file.download
     csv = CSV.parse(csv_content, headers: true)
     {
       headers: csv.headers,
-      rows: csv.first(10)  # Preview first 10 rows
+      rows: csv.first(5).map(&:to_h)  # Preview first 5 rows
     }
   rescue CSV::MalformedCSVError => e
     Rails.logger.error "Error parsing CSV: #{e.message}"

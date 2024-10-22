@@ -1,32 +1,12 @@
-<div class="container mx-auto px-4 py-8">
-  <div class="flex justify-between items-center mb-8">
-    <h1 class="text-3xl font-bold text-gray-800">Datasets</h1>
-    <%= link_to 'New Dataset', new_dataset_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow" %>
-  </div>
-
-  <% if @datasets.any? %>
-    <div class="bg-white shadow-md rounded-lg overflow-hidden border border-gray-200">
-      <ul class="divide-y divide-gray-200">
-        <% @datasets.each do |dataset| %>
-          <li class="hover:bg-gray-50 transition duration-150 ease-in-out">
-            <%= link_to dataset_path(dataset), class: "block p-6" do %>
-              <div class="flex justify-between items-center">
-                <h3 class="text-xl font-semibold text-blue-600"><%= dataset.name %></h3>
-                <span class="ml-4 px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800">
-                  <%= dataset.source %>
-                </span>
-              </div>
-              <div class="mt-2 text-sm text-gray-500">
-                Created <%= time_ago_in_words(dataset.created_at) %> ago
-              </div>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  <% else %>
-    <div class="bg-white shadow-md rounded-lg p-6 text-center">
-      <p class="text-gray-600">No datasets available. Create one to get started!</p>
-    </div>
-  <% end %>
+<div>
+  <h1 class="font-bold text-4xl">Datasets#index</h1>
+  <p>Find me in app/views/datasets/index.html.erb</p>
 </div>
+
+<h1>Datasets</h1>
+<%= link_to 'New Dataset', new_dataset_path %>
+<ul>
+  <% @datasets.each do |dataset| %>
+    <li><%= link_to dataset.name, dataset_path(dataset) %></li>
+  <% end %>
+</ul>
