@@ -1,28 +1,38 @@
 <div class="container mx-auto px-4 py-8">
   <div class="flex justify-between items-center mb-8">
-    <h1 class="text-3xl font-bold text-gray-800">Datasets</h1>
+    <h1 class="text-3xl font-bold mb-4">Datasets</h1>
     <%= link_to 'New Dataset', new_dataset_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow" %>
   </div>
 
   <% if @datasets.any? %>
     <div class="bg-white shadow-md rounded-lg overflow-hidden border border-gray-200">
-      <ul class="divide-y divide-gray-200">
-        <% @datasets.each do |dataset| %>
-          <li class="hover:bg-gray-50 transition duration-150 ease-in-out">
-            <%= link_to dataset_path(dataset), class: "block p-6" do %>
-              <div class="flex justify-between items-center">
-                <h3 class="text-xl font-semibold text-blue-600"><%= dataset.name %></h3>
-                <span class="ml-4 px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-800">
-                  <%= dataset.source %>
-                </span>
-              </div>
-              <div class="mt-2 text-sm text-gray-500">
-                Created <%= time_ago_in_words(dataset.created_at) %> ago
-              </div>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
+      <table class="min-w-full bg-white border border-gray-300">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="px-4 py-2 text-left">Name</th>
+            <th class="px-4 py-2 text-left">Source</th>
+            <th class="px-4 py-2 text-left">Created At</th>
+            <th class="px-4 py-2 text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @datasets.each do |dataset| %>
+            <tr class="border-b border-gray-300">
+              <td class="px-4 py-2"><%= dataset.name %></td>
+              <td class="px-4 py-2"><%= dataset.source %></td>
+              <td class="px-4 py-2"><%= dataset.created_at.strftime("%B %d, %Y") %></td>
+              <td class="px-4 py-2">
+                <%= link_to 'Show', dataset_path(dataset), class: 'text-blue-500 hover:underline' %>
+                <%= link_to 'Edit', edit_dataset_path(dataset), class: 'text-blue-500 hover:underline ml-2' %>
+                <%= link_to 'Delete', dataset_path(dataset), method: :delete, data: { confirm: 'Are you sure?' }, class: 'text-red-500 hover:underline ml-2' %>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4" class="h-4"></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   <% else %>
     <div class="bg-white shadow-md rounded-lg p-6 text-center">

@@ -1,25 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-
-    <nav>
-    <%= link_to 'Home', root_path %>
-    <%= link_to 'Datasets', datasets_path %>
-    <%= link_to 'New Dataset', new_dataset_path %>
-    </nav>
-    <title>SchemasAndContractsCursor</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YourAppName</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbo-track': 'reload' %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="bg-gray-100">
+    <header class="bg-white shadow">
+      <nav class="container mx-auto px-4 py-3">
+        <ul class="flex space-x-6">
+          <li><%= link_to 'Home', root_path, class: 'text-blue-500 hover:text-blue-700' %></li>
+          <li><%= link_to 'Datasets', datasets_path, class: 'text-blue-500 hover:text-blue-700' %></li>
+          <li><%= link_to 'New Dataset', new_dataset_path, class: 'text-blue-500 hover:text-blue-700' %></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container mx-auto mt-6 px-4">
       <%= yield %>
     </main>
+
+    <footer class="mt-6 bg-white shadow">
+      <div class="container mx-auto px-4 py-3">
+        <p>&copy; 2023 YourAppName</p>
+      </div>
+    </footer>
   </body>
 </html>
