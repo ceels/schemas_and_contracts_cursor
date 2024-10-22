@@ -21,14 +21,15 @@ class SchemaGenerator
   private
 
   def infer_data_type(value)
-    return 'integer' if value.to_i.to_s == value
-    return 'float' if value.to_f.to_s == value
-    return 'boolean' if ['true', 'false'].include?(value.downcase)
+    return 'integer' if value&.to_i.to_s == value
+    return 'float' if value&.to_f.to_s == value
+    return 'boolean' if ['true', 'false'].include?(value&.downcase)
     return 'date' if date?(value)
     'string'
   end
 
   def date?(string)
+    return false if string.nil?
     Date.parse(string)
     true
   rescue ArgumentError
