@@ -45,6 +45,15 @@ class DatasetsController < ApplicationController
     end
   end
 
+  def destroy
+    @dataset = Dataset.find(params[:id])
+    if @dataset.destroy
+      redirect_to datasets_path, notice: 'Dataset was successfully deleted.'
+    else
+      redirect_to datasets_path, alert: 'Error deleting dataset.'
+    end
+  end
+
   private
 
   def generate_schema
